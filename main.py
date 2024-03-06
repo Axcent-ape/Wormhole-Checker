@@ -40,14 +40,16 @@ class CheckEligible:
             else: return True
 
             resp = await self.session.get(url, proxy=proxy)
-            resp_json = await resp.json()
+            try:
+                resp_json = await resp.json()
 
-            if resp_json:
-                res_text = f"{address}:{resp_json.get('amount') / ape}"
-                print(f'{self.thread} | {res_text}')
+                if resp_json:
+                    res_text = f"{address}:{resp_json.get('amount') / ape}"
+                    print(f'{self.thread} | {res_text}')
 
-                with open('data/eligible.txt', 'a') as f:
-                    f.write(f'\n{res_text}')
+                    with open('data/eligible.txt', 'a') as f:
+                        f.write(f'\n{res_text}')
+            except: pass
 
             return True
         return False
